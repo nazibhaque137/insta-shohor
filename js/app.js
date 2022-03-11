@@ -17,6 +17,7 @@ const isLiked = (id) => {
 
 
 };
+
 const addToLiked = (id) => {
 
   likedPostsId.push(id); // wrote push instead of plus
@@ -24,7 +25,6 @@ const addToLiked = (id) => {
   showPosts(posts);
 
 };
-
 
 const reportPost = (id) => {
   reportedPostsId.push(id);
@@ -48,7 +48,7 @@ const switchTab = (id) => {
     document.getElementById("reported").style.display = "none";
 
     displayLikedPosts();
-  } else {
+  } else if (id === "reported") { //changed to id reported
     document.getElementById("reported").style.display = "block";
     document.getElementById("posts").style.display = "none";
     document.getElementById("liked").style.display = "none";
@@ -69,6 +69,11 @@ const createPost = (post) => {
                     target="_blank"
                     class="post__avatar"
                   >
+
+                  <!--Bug 2 fixed in the next line
+                  <img src="${image}" alt="User Picture" />
+                  -->  
+
                   <img src="${post.userImage}" alt="User Picture" />
                   </a>
                   <a href="#" class="post__user">phero</a>
@@ -88,18 +93,15 @@ const createPost = (post) => {
                   />
                 </div>
               </div>
-
-              <div class="post__footer">
+    
+ <div class="post__footer">
                 <div class="post__buttons">
                   <button class="post__button" onclick="addToLiked(${post.id})">
-                  <i class="fa-solid fa-heart ${isLiked(post.id) && "text-danger"}"></i>
-                    
-                  </button>
+                 <i id="likeBtn" class="fa-solid fa-heart ${isLiked(post.id) && "black-color"}"></i>
+                 </button>
                   <button class="post__button">
                     <i class="fa-solid fa-comment"></i>
                   </button>
-                  
-
                   <div class="post__indicators"></div>
 
                   <button class="post__button post__button--align-right" onclick="reportPost(${post.id
@@ -123,7 +125,21 @@ const createPost = (post) => {
 
                   <hr/>
 
-                  <div class="post__comments">
+                 <!--Fixed bug 4 in the next block
+                  <div class="post__description">
+                    <small>
+                      <a class="post__name--underline" href="#">
+                          ${post.comments?.user}
+                      </a>
+                      ${post.comments?.text}
+                    </small>
+                  </div>
+                  <span class="post__date-time">30 minutes ago</span>
+                </div>
+              </div>
+                 -->
+
+              <div class="post__comments">
               <small>
                 <a class="post__name--underline" href="#">
                 ${post.comments[0].user}
@@ -158,7 +174,7 @@ const displayLikedPosts = () => {
 
 const displayReportedPosts = () => {
   const reportedPosts = getReportedPosts();
-  posts.forEach((post) => {
+  reportedPosts.forEach((post) => { //fixed bug 5 it just said post.forEach
     const div = createPost(post);
     document.getElementById("reported").appendChild(div);
   });
